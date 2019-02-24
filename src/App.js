@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "./App.css";
 import Routes from "./Routes";
 import { Link } from "react-router-dom";
@@ -16,6 +16,10 @@ class App extends Component {
   
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
+  }
+
+  handleLogout = event => {
+    this.userHasAuthenticated(false);
   }
   
   render() {
@@ -35,12 +39,17 @@ class App extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              <LinkContainer to="/signup">
-                <NavItem>Signup</NavItem>
-              </LinkContainer>
-              <LinkContainer to="/login">
-                <NavItem>Login</NavItem>
-              </LinkContainer>
+              {this.state.isAuthenticated
+                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                : <Fragment>
+                    <LinkContainer to="/signup">
+                      <NavItem>Signup</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to="/login">
+                      <NavItem>Login</NavItem>
+                    </LinkContainer>
+                  </Fragment>
+              }
             </Nav>
           </Navbar.Collapse>
         </Navbar>
